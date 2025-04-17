@@ -1,14 +1,23 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // Tampilkan toast jika URL mengandung ?logout=true
+  useEffect(() => {
+    if (searchParams.get("logout") === "true") {
+      toast.info("Berhasil logout.");
+    }
+  }, [searchParams]);
 
   const handleLogin = async (e) => {
     e.preventDefault();

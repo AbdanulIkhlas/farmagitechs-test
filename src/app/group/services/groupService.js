@@ -31,6 +31,10 @@ export async function fetchGroups(token, page = 1, filters = {}) {
 }
 
 export async function getGroupById(token, id) {
+  console.log("🔍 API URL:", `${BASE_URL}/api/group/get`);
+  console.log("🔐 Token:", token);
+  console.log("🔎 ID:", id);
+
   const res = await fetch(`${BASE_URL}/api/group/get`, {
     method: "POST",
     headers: {
@@ -39,8 +43,17 @@ export async function getGroupById(token, id) {
     },
     body: JSON.stringify({ id }),
   });
-  return res.json();
+
+  const text = await res.text(); // 👉 baca mentah dulu
+  console.log("📦 Response Text:", text);
+
+  try {
+    return JSON.parse(text); // baru parse JSON kalau valid
+  } catch (err) {
+    throw new Error("Gagal parse JSON: " + text);
+  }
 }
+
 
 export async function updateGroup(token, payload) {
   const res = await fetch(`${BASE_URL}/api/group/edit`, {

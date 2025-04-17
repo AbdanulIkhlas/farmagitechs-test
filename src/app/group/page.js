@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import GroupTable from "./components/GroupTable";
@@ -15,6 +16,7 @@ import {
 } from "./services/groupService";
 
 export default function GroupPage() {
+  const router = useRouter();
   const [token, setToken] = useState(null);
   const [groups, setGroups] = useState([]);
   const [editingGroup, setEditingGroup] = useState(null);
@@ -24,6 +26,8 @@ export default function GroupPage() {
     if (savedToken) {
       setToken(savedToken);
       loadGroups(savedToken);
+    } else {
+      router.push("/"); // Jika tidak ada token, redirect ke login
     }
   }, []);
 
@@ -87,25 +91,38 @@ export default function GroupPage() {
     }
 
     try {
-      const res = await getGroupById(searchId);
+      const res = await getGroupById(token, parseInt(searchId));
       if (res?.metaData?.code === 200 && res.response?.data) {
-        setGroups([res.response.data]); // tampilkan satu data
+        setGroups([res.response.data]);
       } else {
         toast.error("Data tidak ditemukan");
-        setGroups([]); // kosongkan hasil jika tidak ditemukan
+        setGroups([]);
       }
     } catch (err) {
+      console.error(err);
       toast.error("Terjadi kesalahan saat mencari group");
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    router.push("/?logout=true");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-blue-700 mb-6">
-          Manajemen Data Group
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold text-blue-700">
+            Manajemen Data Group
+          </h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+          >
+            Logout
+          </button>
+        </div>
 
         <GroupForm
           onSubmit={handleSubmit}
