@@ -29,7 +29,7 @@ export default function GroupTable({ groups, onEdit, onDelete }) {
                 {group.group_name}
               </td>
               <td className="border px-4 py-2 text-gray-700">{group.active}</td>
-              <td className="border px-4 py-2 space-x-2">
+              <td className="border px-4 py-2 space-x-2 border-black">
                 <button
                   className="text-blue-600 hover:underline"
                   onClick={() => onEdit(group)}
