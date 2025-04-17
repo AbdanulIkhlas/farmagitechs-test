@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { loginUser } from "./services/authService";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,8 +13,8 @@ export default function LoginPage() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Tampilkan toast jika URL mengandung ?logout=true
   useEffect(() => {
     if (searchParams.get("logout") === "true") {
       toast.info("Berhasil logout.");
@@ -23,16 +25,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/generate_token`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        }
-      );
-
-      const data = await res.json();
+      const data = await loginUser(username, password);
 
       if (data.metaData.code === 200) {
         localStorage.setItem("token", data.response.token);
@@ -44,7 +37,7 @@ export default function LoginPage() {
         toast.error("Login gagal. Periksa kembali.");
       }
     } catch (error) {
-      toast.error("Terjadi kesalahan jaringan.");
+      toast.error(error.message || "Terjadi kesalahan saat login.");
     }
   };
 
@@ -71,13 +64,23 @@ export default function LoginPage() {
             <label className="block text-sm font-medium text-gray-600">
               Password
             </label>
-            <input
-              type="password"
-              className="w-full mt-1 px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full mt-1 px-4 py-2 text-gray-800 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 pr-10"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                tabIndex={-1}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
           <button
             type="submit"
