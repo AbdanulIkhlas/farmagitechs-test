@@ -27,9 +27,9 @@ export default function GroupPage() {
       setToken(savedToken);
       loadGroups(savedToken);
     } else {
-      router.push("/"); // Jika tidak ada token, redirect ke login
+      router.push("/");
     }
-  }, []);
+  }, [router]);
 
   const loadGroups = async (tokenValue) => {
     const result = await fetchGroups(tokenValue, 1, {
@@ -75,7 +75,7 @@ export default function GroupPage() {
 
     const res = await deleteGroup(token, id);
     if (res.metaData?.code === 200) {
-      toast.success("Group berhasil dihapus");
+      toast.success(res.metaData.message[0]);
       loadGroups(token);
     } else {
       toast.error("Gagal hapus group");

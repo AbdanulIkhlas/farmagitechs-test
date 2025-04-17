@@ -1,5 +1,3 @@
-"use client";
-
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const getToken = () => {
@@ -31,9 +29,9 @@ export async function fetchGroups(token, page = 1, filters = {}) {
 }
 
 export async function getGroupById(token, id) {
-  console.log("🔍 API URL:", `${BASE_URL}/api/group/get`);
-  console.log("🔐 Token:", token);
-  console.log("🔎 ID:", id);
+  console.log("API URL:", `${BASE_URL}/api/group/get`);
+  console.log("Token:", token);
+  console.log("ID:", id);
 
   const res = await fetch(`${BASE_URL}/api/group/get`, {
     method: "POST",
@@ -44,11 +42,11 @@ export async function getGroupById(token, id) {
     body: JSON.stringify({ id }),
   });
 
-  const text = await res.text(); // 👉 baca mentah dulu
+  const text = await res.text();
   console.log("📦 Response Text:", text);
 
   try {
-    return JSON.parse(text); // baru parse JSON kalau valid
+    return JSON.parse(text); 
   } catch (err) {
     throw new Error("Gagal parse JSON: " + text);
   }

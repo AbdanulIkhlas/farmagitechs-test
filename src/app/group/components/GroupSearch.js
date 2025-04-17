@@ -6,7 +6,7 @@ export default function GroupSearch({ onSearch }) {
   const [searchId, setSearchId] = useState("");
 
   const handleSearch = () => {
-    onSearch(searchId.trim()); // bisa kosong atau angka
+    onSearch(searchId.trim());
   };
 
   return (
