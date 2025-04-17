@@ -30,7 +30,7 @@ export default function LoginPage() {
       if (data.metaData.code === 200) {
         localStorage.setItem("token", data.response.token);
         toast.success("Login berhasil!", {
-          autoClose: 1000,
+          autoClose: 1800,
           onClose: () => router.push("/group"),
         });
       } else {
