@@ -16,7 +16,7 @@ export default function GroupSearch({ onSearch }) {
         value={searchId}
         onChange={(e) => setSearchId(e.target.value)}
         placeholder="Cari berdasarkan ID Group"
-        className="border px-3 py-2 rounded w-64 text-gray-700"
+        className="border px-3 py-2 rounded w-64 text-gray-700 hp:w-full"
       />
       <button
         onClick={handleSearch}

@@ -10,43 +10,49 @@ export default function GroupTable({ groups, onEdit, onDelete }) {
   return (
     <div className="mt-6">
       <h2 className="text-lg font-semibold mb-2 text-blue-600">Daftar Group</h2>
-      <table className="w-full border-collapse border border-gray-200">
-        <thead>
-          <tr className="bg-gray-800 text-white">
-            <th className="border px-4 py-2">ID</th>
-            <th className="border px-4 py-2">Nama Group</th>
-            <th className="border px-4 py-2">Status</th>
-            <th className="border px-4 py-2">Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sortedGroups.map((group) => (
-            <tr key={group.group_id} className="text-center">
-              <td className="border px-4 py-2 text-gray-700">
-                {group.group_id}
-              </td>
-              <td className="border px-4 py-2 text-gray-700">
-                {group.group_name}
-              </td>
-              <td className="border px-4 py-2 text-gray-700">{group.active}</td>
-              <td className="border px-4 py-2 space-x-2 border-black">
-                <button
-                  className="text-blue-600 hover:underline"
-                  onClick={() => onEdit(group)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-red-600 hover:underline"
-                  onClick={() => onDelete(group.group_id)}
-                >
-                  Hapus
-                </button>
-              </td>
+
+      {/* Bungkus tabel dengan overflow agar bisa di-scroll horizontal di mobile */}
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse border border-gray-200 min-w-[600px] hp:min-w-full">
+          <thead>
+            <tr className="bg-gray-800 text-white">
+              <th className="border px-4 py-2">ID</th>
+              <th className="border px-4 py-2">Nama Group</th>
+              <th className="border px-4 py-2">Status</th>
+              <th className="border px-4 py-2">Aksi</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedGroups.map((group) => (
+              <tr key={group.group_id} className="text-center">
+                <td className="border px-4 py-2 text-gray-700">
+                  {group.group_id}
+                </td>
+                <td className="border px-4 py-2 text-gray-700">
+                  {group.group_name}
+                </td>
+                <td className="border px-4 py-2 text-gray-700">
+                  {group.active}
+                </td>
+                <td className="border px-4 py-2 space-x-2 border-black">
+                  <button
+                    className="text-blue-600 hover:underline"
+                    onClick={() => onEdit(group)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="text-red-600 hover:underline"
+                    onClick={() => onDelete(group.group_id)}
+                  >
+                    Hapus
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
